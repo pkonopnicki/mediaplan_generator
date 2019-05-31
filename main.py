@@ -25,6 +25,23 @@ for val in first_col_unique:
 #Insert additional empty column if needed
 #output_df.insert(1,'PKPartnerName', '')
 
+#Adding starting and ending date from the dictionary
+
+input_file_dates_dictionary = 'dictionary/dates.xlsx'
+df_dates_dictionary = pd.read_excel(input_file_dates_dictionary)
+
+try:
+    start_date = df_dates_dictionary["Start Date"][0]
+    output_df["Start Date"] = start_date.date()
+except:
+    output_df["Start Date"] = None
+
+try:
+    end_date = df_dates_dictionary["End Date"][0]
+    output_df["End Date"] = end_date.date()
+except:
+    output_df["End Date"] = None
+
 #Adding buy model based on a dictionary
 
 input_file_buymodel_dictionary = 'dictionary/buymodel.xlsx'
@@ -32,13 +49,16 @@ df_buymodel_dictionary = pd.read_excel(input_file_buymodel_dictionary)
 
 output_df['Vendor_left'] = output_df['Vendor']
 output_df['Vendor_left'] = output_df['Vendor_left'].str.lower()
-output_df['Vendor_left'] = output_df['Vendor_left'].str.replace(' ','')
+output_df['Vendor_left'] = output_df['Vendor_left'].str.replace(' ', '')
 
 df_buymodel_dictionary['Vendor_right'] = df_buymodel_dictionary['Vendor']
 df_buymodel_dictionary['Vendor_right'] = df_buymodel_dictionary['Vendor_right'].str.lower()
 df_buymodel_dictionary['Vendor_right'] = df_buymodel_dictionary['Vendor_right'].str.replace(' ','')
 
-merge_df = pd.merge(output_df,df_buymodel_dictionary, left_on='Vendor_left', right_on='Vendor_right', suffixes=('','_right_join'), how='left')
-merge_df = merge_df.drop(columns = ['Vendor_left','Vendor_right_join','Vendor_right'])
+merge_df = pd.merge(output_df, df_buymodel_dictionary, left_on='Vendor_left',
+                    right_on='Vendor_right', suffixes=('', '_right_join'), how='left')
+
+merge_df = merge_df.drop(columns=['Vendor_left', 'Vendor_right_join', 'Vendor_right'])
 
 merge_df.to_excel(output_file, index=False)
+

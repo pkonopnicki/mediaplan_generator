@@ -5,6 +5,8 @@ Media Plan placement names generator.
 - it's possible to choose different values per vendor
 - it's possible to add/delete columns
 - input at least one value per column in each vendor! (no vendor should have a completely empty column)
+- in dictionary you can add/edit Buy Model and Buy Rates for each vendor
+- in dictionary you can add/remove Start Date and End Date (one or both can be left blank if needed)
 ________________________________________________________________________________________________________
 
 To run the script:
