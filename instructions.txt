@@ -1,0 +1,21 @@
+
+Media Plan placement names generator.
+
+- script that generates all combinations of given column values
+- it's possible to choose different values per vendor
+- it's possible to add/delete columns
+- input at least one value per column in each vendor! (no vendor should have a completely empty column)
+________________________________________________________________________________________________________
+
+To run the script:
+- copy entire folder with the script to your desktop
+- change 'input.xslx' file to your liking (add/remove combinations). Example with explanation in 'input_example.xlsx'
+- open Windows PowerShell (Start -> type 'powershell' -> click on Windows PowerShell to open)
+- type 'cd "<script directory>" -> Enter (example: cd "C:\Users\pkonopnicki\Desktop\Mediaplan Python"). Now you're in that folder!
+- type 'python main.py' to run the script
+- enjoy and relax while the labor is being done by a computer script - output.xslx has been generated in the same folder. This is what you need.
+
+If any errors occur, please contact me on Slack (Piotr Konopnicki)
+
+
+
