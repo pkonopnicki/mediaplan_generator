@@ -5,60 +5,65 @@ input_file = 'input.xlsx'
 output_file = 'output.xlsx'
 
 df = pd.read_excel(input_file)
-
-#Creating combinations of the input variables
-first_col = df.columns[0]
-first_col_unique = df[first_col].unique()
-
 output_df = pd.DataFrame()
 
-for val in first_col_unique:
-    df1 = df.loc[df[first_col] == val]
+# Creating combinations of the input variables
 
-    value_list = [df1[x].dropna().unique() for x in df1.columns]
 
-    data = [e for e in itertools.product(*value_list)]
+def give_all_combinations():
+    first_col = df.columns[0]
+    first_col_unique = df[first_col].unique()
+    global output_df
+    for val in first_col_unique:
+        df1 = df.loc[df[first_col] == val]
 
-    df1 = pd.DataFrame(data, columns=df1.columns)
-    output_df = output_df.append(df1, ignore_index=True)
+        value_list = [df1[x].dropna().unique() for x in df1.columns]
 
-#Insert additional empty column if needed
-#output_df.insert(1,'PKPartnerName', '')
+        data = [e for e in itertools.product(*value_list)]
 
-#Adding starting and ending date from the dictionary
+        df1 = pd.DataFrame(data, columns=df1.columns)
+        output_df = output_df.append(df1, ignore_index=True)
 
-input_file_dates_dictionary = 'dictionary/dates.xlsx'
-df_dates_dictionary = pd.read_excel(input_file_dates_dictionary)
+# Adding starting and ending date from the dictionary
 
-try:
-    start_date = df_dates_dictionary["Start Date"][0]
-    output_df["Start Date"] = start_date.date()
-except:
-    output_df["Start Date"] = None
 
-try:
-    end_date = df_dates_dictionary["End Date"][0]
-    output_df["End Date"] = end_date.date()
-except:
-    output_df["End Date"] = None
+def add_date():
+    input_file_dates_dictionary = 'dictionary/dates.xlsx'
+    df_dates_dictionary = pd.read_excel(input_file_dates_dictionary)
+    try:
+        start_date = df_dates_dictionary["Start Date"][0]
+        output_df["Start Date"] = start_date.date()
+    except:
+        output_df["Start Date"] = None
+    try:
+        end_date = df_dates_dictionary["End Date"][0]
+        output_df["End Date"] = end_date.date()
+    except:
+        output_df["End Date"] = None
 
-#Adding buy model based on a dictionary
+# Adding buy model based on a dictionary
 
-input_file_buymodel_dictionary = 'dictionary/buymodel.xlsx'
-df_buymodel_dictionary = pd.read_excel(input_file_buymodel_dictionary)
 
-output_df['Vendor_left'] = output_df['Vendor']
-output_df['Vendor_left'] = output_df['Vendor_left'].str.lower()
-output_df['Vendor_left'] = output_df['Vendor_left'].str.replace(' ', '')
+def add_buymodel():
+    global output_df
+    input_file_buymodel_dictionary = 'dictionary/buymodel.xlsx'
+    df_buymodel_dictionary = pd.read_excel(input_file_buymodel_dictionary)
+    output_df['Vendor_left'] = output_df['Vendor']
+    output_df['Vendor_left'] = output_df['Vendor_left'].str.lower()
+    output_df['Vendor_left'] = output_df['Vendor_left'].str.replace(' ', '')
+    df_buymodel_dictionary['Vendor_right'] = df_buymodel_dictionary['Vendor']
+    df_buymodel_dictionary['Vendor_right'] = df_buymodel_dictionary['Vendor_right'].str.lower()
+    df_buymodel_dictionary['Vendor_right'] = df_buymodel_dictionary['Vendor_right'].str.replace(' ', '')
+    output_df = pd.merge(output_df, df_buymodel_dictionary, left_on='Vendor_left',
+                         right_on='Vendor_right', suffixes=('', '_right_join'), how='left')
+    output_df = output_df.drop(columns=['Vendor_left', 'Vendor_right_join', 'Vendor_right'])
 
-df_buymodel_dictionary['Vendor_right'] = df_buymodel_dictionary['Vendor']
-df_buymodel_dictionary['Vendor_right'] = df_buymodel_dictionary['Vendor_right'].str.lower()
-df_buymodel_dictionary['Vendor_right'] = df_buymodel_dictionary['Vendor_right'].str.replace(' ','')
+# use all methods and save output
 
-merge_df = pd.merge(output_df, df_buymodel_dictionary, left_on='Vendor_left',
-                    right_on='Vendor_right', suffixes=('', '_right_join'), how='left')
 
-merge_df = merge_df.drop(columns=['Vendor_left', 'Vendor_right_join', 'Vendor_right'])
+give_all_combinations()
+add_date()
+add_buymodel()
 
-merge_df.to_excel(output_file, index=False)
+output_df.to_excel(output_file, index=False)
 
