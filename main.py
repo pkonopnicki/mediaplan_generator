@@ -58,12 +58,30 @@ def add_buymodel():
                          right_on='Vendor_right', suffixes=('', '_right_join'), how='left')
     output_df = output_df.drop(columns=['Vendor_left', 'Vendor_right_join', 'Vendor_right'])
 
+
+# Adding budget with multiple granularity option
+
+
+def add_budget():
+    global output_df
+    input_file_budget_dictionary = 'dictionary/budget.xlsx'
+    df_budget_dictionary = pd.read_excel(input_file_budget_dictionary)
+    output_df['Vendor_left'] = output_df['Vendor']
+    df_budget_dictionary['Vendor_right'] = df_budget_dictionary['Vendor']
+    output_df = pd.merge(output_df, df_budget_dictionary, left_on='Vendor_left',
+                         right_on='Vendor_right', suffixes=('', '_right_join'), how='left')
+    output_df = output_df.drop(columns=['Vendor_left', 'Vendor_right_join', 'Vendor_right'])
+    output_df.loc[output_df.duplicated(subset=['Vendor']), "Budget"] = 0
+
+
 # use all methods and save output
 
 
 give_all_combinations()
 add_date()
 add_buymodel()
+add_budget()
+
 
 output_df.to_excel(output_file, index=False)
 
