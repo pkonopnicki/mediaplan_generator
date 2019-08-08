@@ -66,12 +66,19 @@ def add_budget():
     global output_df
     input_file_budget_dictionary = 'dictionary/budget.xlsx'
     df_budget_dictionary = pd.read_excel(input_file_budget_dictionary)
-    output_df['Vendor_left'] = output_df['Vendor']
-    df_budget_dictionary['Vendor_right'] = df_budget_dictionary['Vendor']
-    output_df = pd.merge(output_df, df_budget_dictionary, left_on='Vendor_left',
-                         right_on='Vendor_right', suffixes=('', '_right_join'), how='left')
-    output_df = output_df.drop(columns=['Vendor_left', 'Vendor_right_join', 'Vendor_right'])
-    output_df.loc[output_df.duplicated(subset=['Vendor']), "Budget"] = 0
+
+    list_basic = ['Vendor', 'Country']
+    list_left = ['Vendor_left', 'Country_left']
+    list_right = ['Vendor_right', 'Country_right']
+    list_join_right = [el + "_join" for el in list_right]
+    list_join = list_left + list_right + list_join_right
+
+    output_df[list_left] = output_df[list_basic]
+    df_budget_dictionary[list_right] = df_budget_dictionary[list_basic]
+    output_df = pd.merge(output_df, df_budget_dictionary, left_on=list_left,
+                         right_on=list_right, suffixes=('', '_right_join'), how='left')
+    output_df = output_df.drop(columns=list_join)
+    output_df.loc[output_df.duplicated(subset=list_basic), "Budget"] = 0
 
 
 # use all methods and save output
