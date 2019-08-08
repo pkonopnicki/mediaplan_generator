@@ -1,5 +1,6 @@
 import itertools
 import pandas as pd
+import xlwt
 
 input_file = 'input.xlsx'
 output_file = 'output.xlsx'
@@ -88,6 +89,10 @@ give_all_combinations()
 add_date()
 add_buymodel()
 add_budget()
+
+# adding formula
+
+output_df['formula1'] = '=CONCATENATE(A2,B2)'
 
 
 output_df.to_excel(output_file, index=False)
