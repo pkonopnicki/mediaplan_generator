@@ -1,6 +1,7 @@
 import itertools
 import pandas as pd
 import xlwt
+import xlsxwriter
 
 input_file = 'input.xlsx'
 output_file = 'output.xlsx'
@@ -90,10 +91,23 @@ add_date()
 add_buymodel()
 add_budget()
 
-# adding formula
 
-output_df['formula1'] = '=CONCATENATE(A2,B2)'
+# creating a table in excel and adding formulas
 
 
-output_df.to_excel(output_file, index=False)
+formula1 = '=CONCATENATE(Table1[@[Vendor]])'
+
+data = output_df
+workbook = xlsxwriter.Workbook(output_file)
+worksheet = workbook.add_worksheet("mediaplan")
+worksheet.add_table('A1:Z1000', {'data': data.values.tolist(),
+                                 'columns': [{'header': c} for c in data.columns.tolist()] +
+                                            [{'header': 'Formula1',
+                                              'formula': formula1}
+                                             ],
+                                 'style': 'Table Style Medium 9'})
+
+workbook.close()
+
+
 
