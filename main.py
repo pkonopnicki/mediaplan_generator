@@ -2,6 +2,9 @@ import itertools
 import pandas as pd
 import xlwt
 import xlsxwriter
+from openpyxl import load_workbook
+from openpyxl.comments import Comment
+from openpyxl.styles import Color, PatternFill, Font, Border
 
 input_file = 'input.xlsx'
 output_file = 'output.xlsx'
@@ -142,17 +145,33 @@ output_df["Campaign ID"] = campaign_id
 campaign_name = '=CONCATENATE(Table1[@[Franchise NAme]],"_",Table1[@[Campaign Type]],"_",Table1[@[Product Name]],"_",Table1[@[Campaign Timing]],"_",Table1[@[Year]],"_",Table1[@[Campaign Region]])'
 
 data = output_df
+
 workbook = xlsxwriter.Workbook(output_file)
 worksheet = workbook.add_worksheet("mediaplan")
-worksheet.add_table('A1:Z1000', {'data': data.values.tolist(),
+
+worksheet.add_table('A1:BB1000', {'data': data.values.tolist(),
                                  'columns': [{'header': c} for c in data.columns.tolist()] +
-                                            [{
-                                              'header': 'Campaign Name',
+                                            [{'header': 'Campaign Name',
                                               'formula': campaign_name}
                                              ],
                                  'style': 'Table Style Medium 9'})
 
 workbook.close()
+
+# adding background and font color
+
+
+whiteFont = Font(color='FFFFFF')
+blackFill = PatternFill(bgColor='000000', fill_type='solid')
+
+wb = load_workbook(output_file)
+ws = wb.active
+
+ws['A1'].fill = blackFill
+ws['A1'].font = whiteFont
+wb.save(output_file)
+
+
 
 
 
