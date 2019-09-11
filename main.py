@@ -61,6 +61,24 @@ def add_buymodel():
     output_df = output_df.drop(columns=['Vendor_left', 'Vendor_right_join', 'Vendor_right'])
 
 
+# Adding adserving fee based on a dictionary
+
+
+def add_serving():
+    global output_df
+    input_file_serving_dictionary = 'dictionary/serving.xlsx'
+    df_serving_dictionary = pd.read_excel(input_file_serving_dictionary)
+    output_df['AdServingType_left'] = output_df['AdServingType']
+    output_df['AdServingType_left'] = output_df['AdServingType_left'].str.lower()
+    output_df['AdServingType_left'] = output_df['AdServingType_left'].str.replace(' ', '')
+    df_serving_dictionary['AdServingType_right'] = df_serving_dictionary['AdServingType']
+    df_serving_dictionary['AdServingType_right'] = df_serving_dictionary['AdServingType_right'].str.lower()
+    df_serving_dictionary['AdServingType_right'] = df_serving_dictionary['AdServingType_right'].str.replace(' ', '')
+    output_df = pd.merge(output_df, df_serving_dictionary, left_on='AdServingType_left',
+                         right_on='AdServingType_right', suffixes=('', '_right_join'), how='left')
+    output_df = output_df.drop(columns=['AdServingType_left', 'AdServingType_right_join', 'AdServingType_right'])
+
+
 # Adding budget with multiple granularity option
 
 
@@ -90,20 +108,47 @@ give_all_combinations()
 add_date()
 add_buymodel()
 add_budget()
+add_serving()
 
+
+# add campaign name columns (input will be pulled from a form)
+
+
+client_name = 'CD Projekt'
+campaign_description = 'Sustain'
+franchise_name = 'Cyberpunk'
+campaign_type = 'Sustain'
+product_name = 'Cyberpunk 2077'
+product_detail = '0'
+campaign_timing = 'Q3'
+year = '2019'
+campaign_region = 'NA'
+campaign_id = '100312'
+
+output_df["Client Name"] = client_name
+output_df["Campaign Description"] = campaign_description
+output_df["Franchise Name"] = franchise_name
+output_df["Campaign Type"] = campaign_type
+output_df["Product Name"] = product_name
+output_df["Product Detail"] = product_detail
+output_df["Campaign Timing"] = campaign_timing
+output_df["Year"] = year
+output_df["Campaign Region"] = campaign_region
+output_df["Campaign ID"] = campaign_id
 
 # creating a table in excel and adding formulas
 
 
-formula1 = '=CONCATENATE(Table1[@[Vendor]])'
+campaign_name = '=CONCATENATE(Table1[@[Franchise NAme]],"_",Table1[@[Campaign Type]],"_",Table1[@[Product Name]],"_",Table1[@[Campaign Timing]],"_",Table1[@[Year]],"_",Table1[@[Campaign Region]])'
 
 data = output_df
 workbook = xlsxwriter.Workbook(output_file)
 worksheet = workbook.add_worksheet("mediaplan")
 worksheet.add_table('A1:Z1000', {'data': data.values.tolist(),
                                  'columns': [{'header': c} for c in data.columns.tolist()] +
-                                            [{'header': 'Formula1',
-                                              'formula': formula1}
+                                            [{
+                                              'header': 'Campaign Name',
+                                              'formula': campaign_name}
                                              ],
                                  'style': 'Table Style Medium 9'})
 
