@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <title>
+            Excel file upload and processing : Django Example : ThePythonDjango.Com
+        </title>
+    </head>
+    <body style="margin-top: 30px;margin-left: 30px;">
+        <form action="{% url 'index' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file"
+                   title="Upload excel file"
+                   name="excel_file"
+                   style="border: 1px solid black; padding: 5px;"
+                   required="required">
+
+            <input type="submit"
+                   value="Upload"
+                   name="excel_upload"
+                   style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
+
+
+        </form>
+
+<form action="{% url 'index' %}" method="post" >
+            {% csrf_token %}
+        <p></p>
+        <hr>
+        <input type="hidden"
+               name='vendor count' value = {{ vendor_len }}>
+        <input type="hidden"
+               name='column count' value = {{ column_len }}>
+        <input type="hidden"
+               name='column names' value = {{ column_names }}>
+        {% for vendor in vendor_list %}
+             {{ vendor.vendor_name }} &nbsp;&nbsp;
+
+        <input type="hidden"
+               name='vendor {{ vendor.vendor_id }}' value="{{ vendor.vendor_name }}"> <br><br>
+
+                    {% for columns in vendor.option_list %}
+
+                        <select multiple name = '{{ columns.column_name }} {{ vendor.vendor_id }}'>
+                            <option value = {{ columns.column_name }} selected disabled> {{ columns.column_name }}</option>
+                                {% for option in columns.column_options %}
+                                <option value= "{{ option }}"> {{ option }} </option>
+                                {% endfor %}
+                            <br>
+                        </select>
+
+
+                     {% endfor %}
+            <br><br>
+        {% endfor %}
+<br>
+
+<input type="submit"
+                       value="Next"
+                       name="go_next"
+                       style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
+</form>
+    </body>
+</html>
