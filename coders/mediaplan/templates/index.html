@@ -25,12 +25,17 @@
             {% csrf_token %}
         <p></p>
         <hr>
+
+
         <input type="hidden"
                name='vendor count' value = {{ vendor_len }}>
         <input type="hidden"
                name='column count' value = {{ column_len }}>
         <input type="hidden"
                name='column names' value = {{ column_names }}>
+        <input type="hidden"
+               name='ad_serving_type' value = {{ ad_serving_type }}>
+
         {% for vendor in vendor_list %}
              {{ vendor.vendor_name }} &nbsp;&nbsp;
 
@@ -50,6 +55,84 @@
 
                      {% endfor %}
             <br><br>
+
+        {% endfor %}
+
+        <label for="start">Start date:</label><br>
+        <input type="date" id="start" name="start_date" min="2019-01-01" max="2030-12-31"> <br>
+        <label for="end">End date:</label><br>
+        <input type="date" id="end" name="end_date" min="2019-01-01" max="2030-12-31"> <br>
+        <input name="client_name" placeholder = "Client Name"> <br>
+        <input name="campaign_description" placeholder = "Campaign Description"><br>
+        <input name="franchise_name" placeholder = "Franchise Name"><br>
+        <input name="campaign_type" placeholder = "Campaign Type"><br>
+        <input name="product_name" placeholder = "Product Name"><br>
+        <input name="product_detail" placeholder = "Product Detail"><br>
+        <input name="campaign_timing" placeholder = "Campaign Timing"><br>
+        <input name="year" placeholder = "Year"><br>
+        <input name="campaign_region" placeholder = "Campaign Region"><br>
+        <input name="campaign_id" placeholder = "Campaign ID"><br>
+        <input name="agency_fee_rate" placeholder = "Agency Fee Rate"><br>
+        <input name="verification_buffer_amount" placeholder = "Verification Buffer Amount"><br>
+        <input name="service_fee_rate" placeholder = "Service Fee Rate"><br>
+        <input name="adserving_buffer_amount" placeholder = "Ad Serving Buffer Amount"><br><br>
+
+
+        <label>Buy Model and Buy Rate:</label><br><br>
+        {% for vendor in vendor_list%}
+            <label>{{ vendor.vendor_name }}</label><br>
+            <select name="buymodel">
+                <option value="CPC">CPC</option>
+                <option value="CPM">CPM</option>
+                <option value="CPLP">CPLP</option>
+                <option value="CPA">CPA</option>
+                <option value="dCPM">dCPM</option>
+                <option value="dCPC">dCPC</option>
+                <option value="FLAT">FLAT</option>
+                <option value="Flat">Flat</option>
+                <option value="CPV">CPV</option>
+                <option value="Programmaddict">Programmaddict</option>
+                <option value="FlatImp">FlatImp</option>
+                <option value="NA">NA</option>
+            </select>
+
+            <input type="number" step="0.001" name="buyrate" style="width: 5em"> <br>
+
+        {% endfor %}<br>
+
+        <label>Planned Net Cost:</label><br><br>
+        {% for vendor in vendor_list%}
+            <label>{{ vendor.vendor_name }}</label><br>
+            <input type="number" step="0.01" name="plannednetcost" style="width: 7em"> <br>
+
+        {% endfor %}
+<br>
+
+        <label>Serving Type:</label><br><br>
+        {% for serving in ad_serving_type %}
+            <label>{{ serving }}</label><br>
+            <input type="hidden" name="serving" value="{{ serving }}"></input>
+            <label>Ad Serving Rate</label>
+            <input type="number" step="0.001" value="0" name="adrate" style="width: 5em">
+            <label>Reporting Fee Rate</label>
+            <input type="number" step="0.001" value="0" name="reportingrate" style="width: 5em"> <br><br>
+
+
+        {% endfor %}
+
+        <label>Planned SOV %:</label><br><br>
+        {% for vendor in vendor_list%}
+            <label>{{ vendor.vendor_name }}</label><br>
+            <input name="sov" style="width: 4em"> <br>
+
+        {% endfor %}
+<br>
+
+        <label>KPI:</label><br><br>
+        {% for vendor in vendor_list%}
+            <label>{{ vendor.vendor_name }}</label><br>
+            <input name="kpi" style="width: 4em"> <br>
+
         {% endfor %}
 <br>
 
