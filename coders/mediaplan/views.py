@@ -10,6 +10,7 @@ import xlsxwriter
 from openpyxl import load_workbook
 from openpyxl.comments import Comment
 from openpyxl.styles import Color, PatternFill, Font, Border
+from .column_order import column_order
 
 
 # Create your views here.
@@ -123,36 +124,42 @@ def index(request):
         sov = request.POST.getlist("sov")
         kpi = request.POST.getlist("kpi")
 
+
         buymodel_df = pd.DataFrame()
 
         buymodel_df["Vendor"] = vendor_names
         buymodel_df["Buy Model"] = buymodel
         buymodel_df["Buy Rate"] = buyrate
         buymodel_df["Planned SOV %"] = sov
-        buymodel_df["KPI (If Needed) "] = kpi
+        buymodel_df["KPI (If Needed)"] = kpi
+
 
         # planned net cost df
 
         plannednetcost = request.POST.getlist("plannednetcost")
+        plannedimpressionsmultiplier = request.POST.getlist("plannedimpressions")
 
         plannednetcost_df = pd.DataFrame()
 
         plannednetcost_df["Vendor"] = vendor_names
         plannednetcost_df["Planned Net Cost"] = plannednetcost
+        plannednetcost_df["Planned Impressions Multiplier"] = plannedimpressionsmultiplier
 
         # ad serving and reporting fee
 
-        #serving_types = df["AdServingType"].dropna().unique().tolist()
+
         serving_types = request.POST.getlist("serving")
-        print(serving_types)
         adrate = request.POST.getlist("adrate")
         reportingfee = request.POST.getlist("reportingrate")
+        adverificationrate = request.POST.getlist("adverificationrate")
+
 
         serving_df = pd.DataFrame()
 
         serving_df["AdServingType"] = serving_types
         serving_df["Ad Serving Rate"] = adrate
         serving_df["Reporting Fee Rate"] = reportingfee
+        serving_df["Ad Verification Rate"] = adverificationrate
 
 
 
@@ -222,6 +229,7 @@ def index(request):
                                  right_on=list_right, suffixes=('', '_right_join'), how='left')
             output_df = output_df.drop(columns=list_join)
             output_df.loc[output_df.duplicated(subset=list_basic), "Planned Net Cost"] = 0
+            output_df.loc[output_df.duplicated(subset=list_basic), "Planned Impressions Multiplier"] = 0
 
         # use all methods and save output
 
@@ -246,6 +254,8 @@ def index(request):
         adserving_buffer_amount = request.POST.get("adserving_buffer_amount")
         start_date = request.POST.get("start_date")
         end_date = request.POST.get("end_date")
+        placement_phase = request.POST.get("placement_phase")
+        placement_objective = request.POST.get("placement_objective")
 
 
         output_df["Client Name"] = client_name
@@ -258,6 +268,8 @@ def index(request):
         output_df["Year"] = year
         output_df["Campaign Region"] = campaign_region
         output_df["Campaign ID"] = campaign_id
+        output_df["Placement Phase (If Needed)"] = placement_phase
+        output_df["Placement Objective (If Needed)"] = placement_objective
         output_df["Agency Fee Rate"] = agency_fee_rate
         output_df["Verification Buffer Amount"] = verification_buffer_amount
         output_df["Service Fee Rate"] = service_fee_rate
@@ -288,11 +300,26 @@ def index(request):
         output_df["UTM_Campaign"] = None
         output_df["Campaign"] = None
 
+        selfserved = ["Twitter", "Snapchat", "Reddit", "TTD", "TradeDesk", "Trade Desk",
+                      "The Trade Desk", "TheTradeDesk", "Google", "Google SEM", "SEM",
+                      "GDN", "Search", "Google Search", "YT", "YouTube", "Youtube", "Adwords",
+                      "Google Adwords", "FB", "IG", "Facebook", "Instagram", "FB&IG",
+                      "FB & IG", "Facebook Performance", "Facebook Branding", "Instagram Performance", "Instagram Branding",
+                      "FB & IG Branding", "FB & IG Performance", "FB&IG Branding", "FB&IG Performance"]
+
+        selfserved_lower = [x.lower() for x in selfserved]
+        selfserved_upper = [x.upper() for x in selfserved]
+        selfserved_combined = selfserved + selfserved_lower + selfserved_upper
+
+        output_df["Reporting Source"] = ["V" if el in selfserved_combined else "A" for el in output_df["Vendor"]]
+
 
         campaign_name = '=CONCATENATE(Table1[@[Franchise Name]],"_",Table1[@[Campaign Type]],"_",Table1[@[Product Name]],"_",Table1[@[Campaign Timing]],"_",Table1[@[Year]],"_",Table1[@[Campaign Region]])'
+        planned_impressions = '=Table1[@[Planned Net Cost]]/Table1[@[Planned Impressions Multiplier]]*1000'
         planned_units = '=Table1[@[Planned Net Cost]]/Table1[@[CPM / Cost Per Unit]]'
         agency_fee_cost = '=Table1[@[Planned Net Cost]]*(1/(1-Table1[@[Agency Fee Rate]]))*Table1[@[Agency Fee Rate]]'
         ad_verification_cost = '=Table1[@[Ad Verification Rate]]*(Table1[@[Planned Impressions]]/1000)'
+        ad_serving_cost = '=Table1[@[Ad Serving Rate]]*(Table1[@[Planned Impressions]]/1000)'
         verification_buffer_total = '=Table1[@[Ad Verification Cost]]*(Table1[@[Verification Buffer Amount]])'
         reporting_fee_cost = '=Table1[@[Reporting Fee Rate]]*(Table1[@[Planned Impressions]]/1000)'
         service_fee_cost = '=(Table1[@[Ad Serving Cost]]+Table1[@[Ad Server Buffer Total]])*Table1[@[Service Fee Rate]]'
@@ -306,14 +333,22 @@ def index(request):
                          'Table1[@[Placement Description]],"_",Table1[@[Package Description]],"_",Table1[@[Vertical(Biddable Vs. Branding)]],"_",Table1[@Demographics]))'
         self_serve_campaign_name = '=CONCAT(Table1[@[Campaign ID]],"_",Table1[@[Campaign Type]],"_",Table1[@[Partner Name]],"_",Table1[@Country],"_",Table1[@[Creative(If Needed)]])'
 
-        output_df = output_df.rename(columns={"Buy Rate": "CPM / Cost Per Unit", "B": "c"})
-        data = output_df
+        output_df = output_df.rename(columns={"Buy Rate": "CPM / Cost Per Unit",
+                                              "Vendor": "Partner Name",
+                                              "PackageDescription": "Package Description",
+                                              "PlacementDescription": "Placement Description",
+                                              "AdSize": "Ad Size (WxH)",
+                                              "AdType": "Ad Type",
+                                              "AdServingType": "Ad Serving Type",
+                                              "Copy": "Copy (If Needed)",
+                                              "Creative": "Creative (If Needed)",
+                                              })
 
         workbook = xlsxwriter.Workbook(output_file, {'nan_inf_to_errors': True})
         worksheet = workbook.add_worksheet("mediaplan")
 
-        worksheet.add_table('A1:CC100', {'data': data.values.tolist(),
-                                         'columns': [{'header': c} for c in data.columns.tolist()] +
+        worksheet.add_table('A1:BO100', {'data': output_df.values.tolist(),
+                                         'columns': [{'header': c} for c in output_df.columns.tolist()] +
                                                     [{'header': 'Campaign Name',
                                                       'formula': campaign_name}
                                                      ] +
@@ -346,6 +381,12 @@ def index(request):
                                                      ] +
                                                     [{'header': 'Self Serve Campaign Name',
                                                       'formula': self_serve_campaign_name}
+                                                     ] +
+                                                    [{'header': 'Planned Impressions',
+                                                      'formula': planned_impressions}
+                                                     ] +
+                                                    [{'header': 'Ad Serving Cost',
+                                                      'formula': ad_serving_cost}
                                                      ]
             ,
                                          'style': 'Table Style Medium 9',
@@ -353,10 +394,13 @@ def index(request):
 
         workbook.close()
 
+
+
         # adding background and font color
 
         whiteFont = Font(color='FFFFFF')
         blackFill = PatternFill(bgColor='000000', fill_type='solid')
+
 
         wb = load_workbook(output_file)
         ws = wb.active

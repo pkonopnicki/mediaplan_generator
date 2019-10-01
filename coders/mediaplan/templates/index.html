@@ -72,6 +72,8 @@
         <input name="year" placeholder = "Year"><br>
         <input name="campaign_region" placeholder = "Campaign Region"><br>
         <input name="campaign_id" placeholder = "Campaign ID"><br>
+        <input name="placement_phase" placeholder = "Placement Phase"><br>
+        <input name="placement_objective" placeholder = "Placement Objective"><br>
         <input name="agency_fee_rate" placeholder = "Agency Fee Rate"><br>
         <input name="verification_buffer_amount" placeholder = "Verification Buffer Amount"><br>
         <input name="service_fee_rate" placeholder = "Service Fee Rate"><br>
@@ -108,6 +110,14 @@
         {% endfor %}
 <br>
 
+        <label>Planned Impressions Multiplier:</label><br><br>
+        {% for vendor in vendor_list%}
+            <label>{{ vendor.vendor_name }}</label><br>
+            <input type="number" step="0.01" name="plannedimpressions" style="width: 7em"> <br>
+
+        {% endfor %}
+<br>
+
         <label>Serving Type:</label><br><br>
         {% for serving in ad_serving_type %}
             <label>{{ serving }}</label><br>
@@ -115,7 +125,9 @@
             <label>Ad Serving Rate</label>
             <input type="number" step="0.001" value="0" name="adrate" style="width: 5em">
             <label>Reporting Fee Rate</label>
-            <input type="number" step="0.001" value="0" name="reportingrate" style="width: 5em"> <br><br>
+            <input type="number" step="0.001" value="0" name="reportingrate" style="width: 5em">
+            <label>Ad Verification Rate</label>
+            <input type="number" step="0.001" value="0" name="adverificationrate" style="width: 5em"> <br><br>
 
 
         {% endfor %}
