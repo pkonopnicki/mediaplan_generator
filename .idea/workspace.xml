@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a0cb949b-4acf-4d75-afcb-22693e410ad2" name="Default Changelist" comment="">
+    <list default="true" id="a0cb949b-4acf-4d75-afcb-22693e410ad2" name="Default Changelist" comment="repush without venv and other files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/coders/coders/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/coders/coders/settings.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -178,7 +179,7 @@
       <workItem from="1569239171305" duration="1671000" />
       <workItem from="1569242139400" duration="12698000" />
       <workItem from="1569400953601" duration="22624000" />
-      <workItem from="1569928271942" duration="9119000" />
+      <workItem from="1569928271942" duration="10781000" />
     </task>
     <task id="LOCAL-00001" summary="some functionalities added:&#10;- buy model buy rate&#10;- kpi &#10;- sov&#10;- serving&#10;- net cost">
       <created>1569592200516</created>
@@ -208,7 +209,14 @@
       <option name="project" value="LOCAL" />
       <updated>1569939388081</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="repush without venv and other files">
+      <created>1569942922918</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1569942922918</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
