@@ -317,7 +317,7 @@ def index(request):
         campaign_name = '=CONCATENATE(Table1[@[Franchise Name]],"_",Table1[@[Campaign Type]],"_",Table1[@[Product Name]],"_",Table1[@[Campaign Timing]],"_",Table1[@[Year]],"_",Table1[@[Campaign Region]])'
         planned_impressions = '=Table1[@[Planned Net Cost]]/Table1[@[Planned Impressions Multiplier]]*1000'
         planned_units = '=Table1[@[Planned Net Cost]]/Table1[@[CPM / Cost Per Unit]]'
-        agency_fee_cost = '=Table1[@[Planned Net Cost]]*(1/(1-Table1[@[Agency Fee Rate]]))*Table1[@[Agency Fee Rate]]'
+        agency_fee_cost = '=Table1[@[Agency Fee Rate]]*Table1[@[Planned Net Cost]]'
         ad_verification_cost = '=Table1[@[Ad Verification Rate]]*(Table1[@[Planned Impressions]]/1000)'
         ad_serving_cost = '=Table1[@[Ad Serving Rate]]*(Table1[@[Planned Impressions]]/1000)'
         verification_buffer_total = '=Table1[@[Ad Verification Cost]]*(Table1[@[Verification Buffer Amount]])'
@@ -326,12 +326,12 @@ def index(request):
         adserver_buffer_total = '=Table1[@[Ad Serving Buffer Amount]]*Table1[@[Ad Serving Cost]]'
         total_cost = '=SUM(Table1[@[Ad Server Buffer Total]],Table1[@[Reporting Fee Cost]],Table1[@[Service Fee Cost]],Table1[@[Ad Serving Cost]],Table1[@[Ad Verification Cost]],Table1[@[Verification Buffer Total]],Table1[@[Agency Fee Cost]],Table1[@[Planned Net Cost]])'
         placement_name = '=IF(Table1[@[Ad Size (WxH)]]="PKG","",CONCATENATE(Table1[@[Campaign ID]],"_",Table1[@[Partner Name]],"_' \
-                         '",Table1[@Country],"_",Table1[@[Targeting ]],"_",Table1[@[Creative(If Needed)]],"_",Table1[@[Copy(If Needed) ]],"_",' \
+                         '",Table1[@[Country]],"_",Table1[@[Targeting]],"_",Table1[@[Creative (If Needed)]],"_",Table1[@[Copy (If Needed)]],"_",' \
                          'Table1[@[Data Source]],"_",Table1[@[Buy Model]],"_",Table1[@[CPM / Cost Per Unit]],"_",Table1[@[Start Date]],"_",Table1[@[Ad Serving Type]],"_"' \
-                         ',Table1[@[Ad Serving Rate]],"_",Table1[@[Reporting Fee Rate]],"_",Table1[@[KPI (If Needed) ]],"_",Table1[@[Placement Objective(If Needed) ]],"_",Table1[@[Placement Phase(If Needed) ]],"_",'\
-                         'Table1[@[Service Fee Rate]],"_",Table1[@[Ad Verification Rate]],"_",Table1[@[Reporting Source]],"_",Table1[@Device],"_",Table1[@[Ad Size (WxH)]],"_",Table1[@[Ad Type]],"_",' \
-                         'Table1[@[Placement Description]],"_",Table1[@[Package Description]],"_",Table1[@[Vertical(Biddable Vs. Branding)]],"_",Table1[@Demographics]))'
-        self_serve_campaign_name = '=CONCAT(Table1[@[Campaign ID]],"_",Table1[@[Campaign Type]],"_",Table1[@[Partner Name]],"_",Table1[@Country],"_",Table1[@[Creative(If Needed)]])'
+                         ',Table1[@[Ad Serving Rate]],"_",Table1[@[Reporting Fee Rate]],"_",Table1[@[KPI (If Needed)]],"_",Table1[@[Placement Objective (If Needed)]],"_",Table1[@[Placement Phase (If Needed)]],"_",'\
+                         'Table1[@[Service Fee Rate]],"_",Table1[@[Ad Verification Rate]],"_",Table1[@[Reporting Source]],"_",Table1[@[Device]],"_",Table1[@[Ad Size (WxH)]],"_",Table1[@[Ad Type]],"_",' \
+                         'Table1[@[Placement Description]],"_",Table1[@[Package Description]]))'
+        self_serve_campaign_name = '=CONCATENATE(Table1[@[Campaign ID]],"_",Table1[@[Campaign Type]],"_",Table1[@[Partner Name]],"_",Table1[@[Country]],"_",Table1[@[Creative (If Needed)]])'
 
         output_df = output_df.rename(columns={"Buy Rate": "CPM / Cost Per Unit",
                                               "Vendor": "Partner Name",

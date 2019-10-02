@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a0cb949b-4acf-4d75-afcb-22693e410ad2" name="Default Changelist" comment="repush without venv and other files">
+    <list default="true" id="a0cb949b-4acf-4d75-afcb-22693e410ad2" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/input (copy 1).xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/input example.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/input.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/coders/coders/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/coders/coders/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/coders/mediaplan/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/coders/mediaplan/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -179,7 +182,9 @@
       <workItem from="1569239171305" duration="1671000" />
       <workItem from="1569242139400" duration="12698000" />
       <workItem from="1569400953601" duration="22624000" />
-      <workItem from="1569928271942" duration="10781000" />
+      <workItem from="1569928271942" duration="7728000" />
+      <workItem from="1569946832673" duration="1582000" />
+      <workItem from="1570014722702" duration="217000" />
     </task>
     <task id="LOCAL-00001" summary="some functionalities added:&#10;- buy model buy rate&#10;- kpi &#10;- sov&#10;- serving&#10;- net cost">
       <created>1569592200516</created>
@@ -188,35 +193,7 @@
       <option name="project" value="LOCAL" />
       <updated>1569592200517</updated>
     </task>
-    <task id="LOCAL-00002" summary="some functionalities added:&#10;- added the rest of the columns&#10;- changed column names">
-      <created>1569938744279</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1569938744279</updated>
-    </task>
-    <task id="LOCAL-00003" summary="repush without venv and other files">
-      <created>1569939288301</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1569939288301</updated>
-    </task>
-    <task id="LOCAL-00004" summary="repush without venv and other files">
-      <created>1569939388081</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1569939388081</updated>
-    </task>
-    <task id="LOCAL-00005" summary="repush without venv and other files">
-      <created>1569942922918</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1569942922918</updated>
-    </task>
-    <option name="localTasksCounter" value="6" />
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -237,9 +214,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="some functionalities added:&#10;- buy model buy rate&#10;- kpi &#10;- sov&#10;- serving&#10;- net cost" />
-    <MESSAGE value="some functionalities added:&#10;- added the rest of the columns&#10;- changed column names" />
-    <MESSAGE value="repush without venv and other files" />
-    <option name="LAST_COMMIT_MESSAGE" value="repush without venv and other files" />
+    <option name="LAST_COMMIT_MESSAGE" value="some functionalities added:&#10;- buy model buy rate&#10;- kpi &#10;- sov&#10;- serving&#10;- net cost" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/mediaplan_generator$column_order.coverage" NAME="column_order Coverage Results" MODIFIED="1569936821842" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/coders/mediaplan" />
