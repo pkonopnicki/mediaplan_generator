@@ -3,6 +3,31 @@
         <title>
             Excel file upload and processing : Django Example : ThePythonDjango.Com
         </title>
+	    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+        <script>
+            $(function () {
+                $('#myForm').submit(function () {
+                    var isValid = true;
+                    $('select.required').each((index, element) => {
+                        var isValid = validateMultipleSelect(element);
+                        if (!isValid) {
+                            alert("Select at least one option in each column per vendor");
+                            event.preventDefault()
+                            return isValid;
+
+                        }
+                    });
+                    return isValid;
+
+                });
+            });
+            function validateMultipleSelect(select) {
+                var number =$('option:selected', select).size();
+                return (number >0);
+            }
+
+        </script>
+
     </head>
     <body style="margin-top: 30px;margin-left: 30px;">
         <form action="{% url 'index' %}" method="post" enctype="multipart/form-data">
@@ -21,7 +46,7 @@
 
         </form>
 
-<form action="{% url 'index' %}" method="post" >
+<form action="{% url 'index' %}" method="post" id="myForm">
             {% csrf_token %}
         <p></p>
         <hr>
@@ -44,8 +69,8 @@
 
                     {% for columns in vendor.option_list %}
 
-                        <select multiple name = '{{ columns.column_name }} {{ vendor.vendor_id }}'>
-                            <option value = {{ columns.column_name }} selected disabled> {{ columns.column_name }}</option>
+                        <select class="required" multiple id="required" name = '{{ columns.column_name }} {{ vendor.vendor_id }}'>
+                            <option value = {{ columns.column_name }} disabled> {{ columns.column_name }}</option>
                                 {% for option in columns.column_options %}
                                 <option value= "{{ option }}"> {{ option }} </option>
                                 {% endfor %}
@@ -148,7 +173,7 @@
         {% endfor %}
 <br>
 
-<input type="submit"
+<input type="submit" id="submitfinal"
                        value="Next"
                        name="go_next"
                        style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
