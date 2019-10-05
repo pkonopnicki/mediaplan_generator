@@ -320,28 +320,44 @@ def index(request):
         output_df["Reporting Source"] = ["V" if el in selfserved_combined else "A" for el in output_df["Vendor"]]
 
         # add formulas
-
-        campaign_name = '=CONCATENATE(Table1[@[Franchise Name]],"_",Table1[@[Campaign Type]],"_",Table1[@[Product Name]],"_",Table1[@[Campaign Timing]],"_",Table1[@[Year]],"_",Table1[@[Campaign Region]])'
-        planned_impressions = '=Table1[@[Planned Net Cost]]/Table1[@[Planned Impressions Multiplier]]*1000'
-        planned_units = '=Table1[@[Planned Net Cost]]/Table1[@[CPM / Cost Per Unit]]'
-        agency_fee_cost = '=Table1[@[Agency Fee Rate]]*Table1[@[Planned Net Cost]]'
-        ad_verification_cost = '=Table1[@[Ad Verification Rate]]*(Table1[@[Planned Impressions]]/1000)'
-        ad_serving_cost = '=Table1[@[Ad Serving Rate]]*(Table1[@[Planned Impressions]]/1000)'
-        verification_buffer_total = '=Table1[@[Ad Verification Cost]]*(Table1[@[Verification Buffer Amount]])'
-        reporting_fee_cost = '=Table1[@[Reporting Fee Rate]]*(Table1[@[Planned Impressions]]/1000)'
-        service_fee_cost = '=(Table1[@[Ad Serving Cost]]+Table1[@[Ad Server Buffer Total]])*Table1[@[Service Fee Rate]]'
-        adserver_buffer_total = '=Table1[@[Ad Serving Buffer Amount]]*Table1[@[Ad Serving Cost]]'
-        total_cost = '=SUM(Table1[@[Ad Server Buffer Total]],Table1[@[Reporting Fee Cost]],Table1[@[Service Fee Cost]],Table1[@[Ad Serving Cost]],Table1[@[Ad Verification Cost]],Table1[@[Verification Buffer Total]],Table1[@[Agency Fee Cost]],Table1[@[Planned Net Cost]])'
-        placement_name = '=IF(Table1[@[Ad Size (WxH)]]="PKG","",CONCATENATE(Table1[@[Campaign ID]],"_",Table1[@[Partner Name]],"_' \
-                         '",Table1[@[Country]],"_",Table1[@[Targeting]],"_",Table1[@[Creative (If Needed)]],"_",Table1[@[Copy (If Needed)]],' \
-                         '"_",Table1[@[Buy Model]],"_",Table1[@[CPM / Cost Per Unit]],"_",Table1[@[Start Date]],"_",Table1[@[Ad Serving Type]],' \
-                         '"_",Table1[@[Reporting Fee Rate]],"_",Table1[@[KPI (If Needed)]],"_",Table1[@[Placement Objective (If Needed)]],"_",Table1[@[Placement Phase (If Needed)]],"_",'\
-                         'Table1[@[Service Fee Rate]],"_",Table1[@[Ad Verification Rate]],"_",Table1[@[Reporting Source]],"_",Table1[@[Device]],"_",Table1[@[Ad Size (WxH)]],"_",Table1[@[Ad Type]],"_",' \
-                         'Table1[@[Placement Description]],"_",Table1[@[Package Description]]))'
-        self_serve_campaign_name = '=CONCATENATE(Table1[@[Campaign ID]],"_",Table1[@[Campaign Type]],"_",Table1[@[Partner Name]],"_",Table1[@[Country]],"_",Table1[@[Creative (If Needed)]])'
+        '=CONCATENATE(Table1[[#This Row],[column_a]]'
 
 
-        # change column order
+        campaign_name = '=CONCATENATE(Table1[[#This Row],[Franchise Name]],"_",Table1[[#This Row],[Campaign Type]],"_",Table1[[#This Row],[Product Name]],"_",Table1[[#This Row],[Campaign Timing]],"_",Table1[[#This Row],[Year]],"_",Table1[[#This Row],[Campaign Region]])'
+        planned_impressions = '=Table1[[#This Row],[Planned Net Cost]]/Table1[[#This Row],[Planned Impressions Multiplier]]*1000'
+        planned_units = '=Table1[[#This Row],[Planned Net Cost]]/Table1[[#This Row],[CPM / Cost Per Unit]]'
+        agency_fee_cost = '=Table1[[#This Row],[Agency Fee Rate]]*Table1[[#This Row],[Planned Net Cost]]'
+        ad_verification_cost = '=Table1[[#This Row],[Ad Verification Rate]]*(Table1[[#This Row],[Planned Impressions]]/1000)'
+        ad_serving_cost = '=Table1[[#This Row],[Ad Serving Rate]]*(Table1[[#This Row],[Planned Impressions]]/1000)'
+        verification_buffer_total = '=Table1[[#This Row],[Ad Verification Cost]]*(Table1[[#This Row],[Verification Buffer Amount]])'
+        reporting_fee_cost = '=Table1[[#This Row],[Reporting Fee Rate]]*(Table1[[#This Row],[Planned Impressions]]/1000)'
+        service_fee_cost = '=(Table1[[#This Row],[Ad Serving Cost]]+Table1[[#This Row],[Ad Server Buffer Total]])*Table1[[#This Row],[Service Fee Rate]]'
+        adserver_buffer_total = '=Table1[[#This Row],[Ad Serving Buffer Amount]]*Table1[[#This Row],[Ad Serving Cost]]'
+        total_cost = '=SUM(Table1[[#This Row],[Ad Server Buffer Total]],Table1[[#This Row],[Reporting Fee Cost]],Table1[[#This Row],[Service Fee Cost]],Table1[[#This Row],[Ad Serving Cost]],Table1[[#This Row],[Ad Verification Cost]],Table1[[#This Row],[Verification Buffer Total]],Table1[[#This Row],[Agency Fee Cost]],Table1[[#This Row],[Planned Net Cost]])'
+        placement_name = '=IF(Table1[[#This Row],[Ad Size (WxH)]]="PKG","",CONCATENATE(Table1[[#This Row],[Campaign ID]],"_",Table1[[#This Row],[Partner Name]],"_' \
+                         '",Table1[[#This Row],[Country]],"_",Table1[[#This Row],[Targeting]],"_",Table1[[#This Row],[Creative (If Needed)]],"_",Table1[[#This Row],[Copy (If Needed)]],' \
+                         '"_",Table1[[#This Row],[Buy Model]],"_",Table1[[#This Row],[CPM / Cost Per Unit]],"_",Table1[[#This Row],[Start Date]],"_",Table1[[#This Row],[Ad Serving Type]],' \
+                         '"_",Table1[[#This Row],[Reporting Fee Rate]],"_",Table1[[#This Row],[KPI (If Needed)]],"_",Table1[[#This Row],[Placement Objective (If Needed)]],"_",Table1[[#This Row],[Placement Phase (If Needed)]],"_",'\
+                         'Table1[[#This Row],[Service Fee Rate]],"_",Table1[[#This Row],[Ad Verification Rate]],"_",Table1[[#This Row],[Reporting Source]],"_",Table1[[#This Row],[Device]],"_",Table1[[#This Row],[Ad Size (WxH)]],"_",Table1[[#This Row],[Ad Type]],"_",' \
+                         'Table1[[#This Row],[Placement Description]],"_",Table1[[#This Row],[Package Description]]))'
+        self_serve_campaign_name = '=CONCATENATE(Table1[[#This Row],[Campaign ID]],"_",Table1[[#This Row],[Campaign Type]],"_",Table1[[#This Row],[Partner Name]],"_",Table1[[#This Row],[Country]],"_",Table1[[#This Row],[Creative (If Needed)]])'
+
+        output_df["Campaign Name"] = campaign_name
+        output_df["Planned Units (eg. CPV, CPE, CPI)"] = planned_units
+        output_df["Agency Fee Cost"] = agency_fee_cost
+        output_df["Ad Verification Cost"] = ad_verification_cost
+        output_df["Verification Buffer Total"] = verification_buffer_total
+        output_df["Reporting Fee Cost"] = reporting_fee_cost
+        output_df["Service Fee Cost"] = service_fee_cost
+        output_df["Ad Server Buffer Total"] = adserver_buffer_total
+        output_df["Total Cost"] = total_cost
+        output_df["Placement Name"] = placement_name
+        output_df["Self Serve Campaign Name"] = self_serve_campaign_name
+        output_df["Planned Impressions"] = planned_impressions
+        output_df["Ad Serving Cost"] = ad_serving_cost
+
+
+        # rename columns
 
         output_df = output_df.rename(columns={"Buy Rate": "CPM / Cost Per Unit",
                                               "Vendor": "Partner Name",
@@ -354,56 +370,20 @@ def index(request):
                                               "Creative": "Creative (If Needed)",
                                               })
 
-        # add excel table
+
 
         workbook = xlsxwriter.Workbook(output_file, {'nan_inf_to_errors': True})
         worksheet = workbook.add_worksheet("mediaplan")
 
-        '''output_df = output_df[column_order]'''
+        # change column order
+
+        output_df = output_df[column_order]
         total_rows = len(output_df.index)+10
 
+        # add excel table
+
         worksheet.add_table('A1:BO{}'.format(total_rows), {'data': output_df.values.tolist(),
-                                         'columns': [{'header': c} for c in output_df.columns.tolist()] +
-                                                    [{'header': 'Campaign Name',
-                                                      'formula': campaign_name}
-                                                     ] +
-                                                    [{'header': 'Planned Units (eg. CPV, CPE, CPI)',
-                                                      'formula': planned_units}
-                                                     ] +
-                                                    [{'header': 'Agency Fee Cost',
-                                                      'formula': agency_fee_cost}
-                                                     ] +
-                                                    [{'header': 'Ad Verification Cost',
-                                                      'formula': ad_verification_cost}
-                                                     ] +
-                                                    [{'header': 'Verification Buffer Total',
-                                                      'formula': verification_buffer_total}
-                                                     ] +
-                                                    [{'header': 'Reporting Fee Cost',
-                                                      'formula': reporting_fee_cost}
-                                                     ] +
-                                                    [{'header': 'Service Fee Cost',
-                                                      'formula': service_fee_cost}
-                                                     ] +
-                                                    [{'header': 'Ad Server Buffer Total',
-                                                      'formula': adserver_buffer_total}
-                                                     ] +
-                                                    [{'header': 'Total Cost',
-                                                      'formula': total_cost}
-                                                     ] +
-                                                    [{'header': 'Placement Name',
-                                                      'formula': placement_name}
-                                                     ] +
-                                                    [{'header': 'Self Serve Campaign Name',
-                                                      'formula': self_serve_campaign_name}
-                                                     ] +
-                                                    [{'header': 'Planned Impressions',
-                                                      'formula': planned_impressions}
-                                                     ] +
-                                                    [{'header': 'Ad Serving Cost',
-                                                      'formula': ad_serving_cost}
-                                                     ]
-            ,
+                                         'columns': [{'header': c} for c in output_df.columns.tolist()],
                                          'style': 'Table Style Medium 9',
                                          })
 
