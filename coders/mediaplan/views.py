@@ -343,7 +343,7 @@ def index(request):
 
         # change column order
 
-        '''output_df = output_df.rename(columns={"Buy Rate": "CPM / Cost Per Unit",
+        output_df = output_df.rename(columns={"Buy Rate": "CPM / Cost Per Unit",
                                               "Vendor": "Partner Name",
                                               "PackageDescription": "Package Description",
                                               "PlacementDescription": "Placement Description",
@@ -352,14 +352,14 @@ def index(request):
                                               "AdServingType": "Ad Serving Type",
                                               "Copy": "Copy (If Needed)",
                                               "Creative": "Creative (If Needed)",
-                                              })'''
+                                              })
 
         # add excel table
 
         workbook = xlsxwriter.Workbook(output_file, {'nan_inf_to_errors': True})
         worksheet = workbook.add_worksheet("mediaplan")
 
-        output_df = output_df[column_order]
+        '''output_df = output_df[column_order]'''
         total_rows = len(output_df.index)+10
 
         worksheet.add_table('A1:BO{}'.format(total_rows), {'data': output_df.values.tolist(),
