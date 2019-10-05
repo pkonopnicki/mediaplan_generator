@@ -340,23 +340,10 @@ def index(request):
                          'Table1[@[Placement Description]],"_",Table1[@[Package Description]]))'
         self_serve_campaign_name = '=CONCATENATE(Table1[@[Campaign ID]],"_",Table1[@[Campaign Type]],"_",Table1[@[Partner Name]],"_",Table1[@[Country]],"_",Table1[@[Creative (If Needed)]])'
 
-        output_df["Campaign Name"] = campaign_name
-        output_df["Planned Units (eg. CPV, CPE, CPI)"] = planned_impressions
-        output_df["Agency Fee Cost"] = planned_units
-        output_df["Ad Verification Cost"] = agency_fee_cost
-        output_df["Verification Buffer Total"] = ad_verification_cost
-        output_df["Reporting Fee Cost"] = ad_serving_cost
-        output_df["Service Fee Cost"] = verification_buffer_total
-        output_df["Ad Server Buffer Total"] = reporting_fee_cost
-        output_df["Total Cost"] = service_fee_cost
-        output_df["Placement Name"] = adserver_buffer_total
-        output_df["Self Serve Campaign Name"] = total_cost
-        output_df["Planned Impressions"] = placement_name
-        output_df["Ad Serving Cost"] = self_serve_campaign_name
 
         # change column order
 
-        output_df = output_df.rename(columns={"Buy Rate": "CPM / Cost Per Unit",
+        '''output_df = output_df.rename(columns={"Buy Rate": "CPM / Cost Per Unit",
                                               "Vendor": "Partner Name",
                                               "PackageDescription": "Package Description",
                                               "PlacementDescription": "Placement Description",
@@ -365,7 +352,7 @@ def index(request):
                                               "AdServingType": "Ad Serving Type",
                                               "Copy": "Copy (If Needed)",
                                               "Creative": "Creative (If Needed)",
-                                              })
+                                              })'''
 
         # add excel table
 
@@ -376,8 +363,46 @@ def index(request):
         total_rows = len(output_df.index)+10
 
         worksheet.add_table('A1:BO{}'.format(total_rows), {'data': output_df.values.tolist(),
-                                         'columns': [{'header': c} for c in output_df.columns.tolist()]
-
+                                         'columns': [{'header': c} for c in output_df.columns.tolist()] +
+                                                    [{'header': 'Campaign Name',
+                                                      'formula': campaign_name}
+                                                     ] +
+                                                    [{'header': 'Planned Units (eg. CPV, CPE, CPI)',
+                                                      'formula': planned_units}
+                                                     ] +
+                                                    [{'header': 'Agency Fee Cost',
+                                                      'formula': agency_fee_cost}
+                                                     ] +
+                                                    [{'header': 'Ad Verification Cost',
+                                                      'formula': ad_verification_cost}
+                                                     ] +
+                                                    [{'header': 'Verification Buffer Total',
+                                                      'formula': verification_buffer_total}
+                                                     ] +
+                                                    [{'header': 'Reporting Fee Cost',
+                                                      'formula': reporting_fee_cost}
+                                                     ] +
+                                                    [{'header': 'Service Fee Cost',
+                                                      'formula': service_fee_cost}
+                                                     ] +
+                                                    [{'header': 'Ad Server Buffer Total',
+                                                      'formula': adserver_buffer_total}
+                                                     ] +
+                                                    [{'header': 'Total Cost',
+                                                      'formula': total_cost}
+                                                     ] +
+                                                    [{'header': 'Placement Name',
+                                                      'formula': placement_name}
+                                                     ] +
+                                                    [{'header': 'Self Serve Campaign Name',
+                                                      'formula': self_serve_campaign_name}
+                                                     ] +
+                                                    [{'header': 'Planned Impressions',
+                                                      'formula': planned_impressions}
+                                                     ] +
+                                                    [{'header': 'Ad Serving Cost',
+                                                      'formula': ad_serving_cost}
+                                                     ]
             ,
                                          'style': 'Table Style Medium 9',
                                          })
