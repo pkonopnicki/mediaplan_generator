@@ -58,7 +58,7 @@ def index(request):
             'ad_serving_type': ad_serving_type
         }
 
-        return render(request, 'index.html', ctx)
+        return render(request, 'redirect.html', ctx)
 
     elif 'go_next' in request.POST:
 
@@ -179,7 +179,7 @@ def index(request):
                 df1 = pd.DataFrame(data, columns=df1.columns)
                 output_df = output_df.append(df1, ignore_index=True)
 
-        # Adding buy model based on a dictionary
+        # Adding buy model
 
         def add_buymodel():
             global output_df
@@ -194,7 +194,7 @@ def index(request):
                                  right_on='Vendor_right', suffixes=('', '_right_join'), how='left')
             output_df = output_df.drop(columns=['Vendor_left', 'Vendor_right_join', 'Vendor_right'])
 
-        # Adding adserving fee based on a dictionary
+        # Adding adserving fee
 
         def add_serving():
             global output_df
@@ -231,12 +231,14 @@ def index(request):
             output_df.loc[output_df.duplicated(subset=list_basic), "Planned Net Cost"] = 0
             output_df.loc[output_df.duplicated(subset=list_basic), "Planned Impressions Multiplier"] = 0
 
-        # use all methods and save output
+        # use all methods
 
         give_all_combinations()
         add_buymodel()
         add_budget()
         add_serving()
+
+        # get all columns from the form and add them to df
 
         client_name = request.POST.get("client_name")
         campaign_description = request.POST.get("campaign_description")
@@ -284,6 +286,8 @@ def index(request):
         except:
             output_df["End Date"] = None
 
+        # add empty columns as per mediaplan
+
         output_df["DCM Link"] = None
         output_df["Length"] = None
         output_df["Twitter Card Name"] = None
@@ -300,6 +304,8 @@ def index(request):
         output_df["UTM_Campaign"] = None
         output_df["Campaign"] = None
 
+        # add reporting source (v or a) depending on vendor
+
         selfserved = ["Twitter", "Snapchat", "Reddit", "TTD", "TradeDesk", "Trade Desk",
                       "The Trade Desk", "TheTradeDesk", "Google", "Google SEM", "SEM",
                       "GDN", "Search", "Google Search", "YT", "YouTube", "Youtube", "Adwords",
@@ -313,6 +319,7 @@ def index(request):
 
         output_df["Reporting Source"] = ["V" if el in selfserved_combined else "A" for el in output_df["Vendor"]]
 
+        # add formulas
 
         campaign_name = '=CONCATENATE(Table1[@[Franchise Name]],"_",Table1[@[Campaign Type]],"_",Table1[@[Product Name]],"_",Table1[@[Campaign Timing]],"_",Table1[@[Year]],"_",Table1[@[Campaign Region]])'
         planned_impressions = '=Table1[@[Planned Net Cost]]/Table1[@[Planned Impressions Multiplier]]*1000'
@@ -347,6 +354,7 @@ def index(request):
         output_df["Planned Impressions"] = placement_name
         output_df["Ad Serving Cost"] = self_serve_campaign_name
 
+        # change column order
 
         output_df = output_df.rename(columns={"Buy Rate": "CPM / Cost Per Unit",
                                               "Vendor": "Partner Name",
@@ -358,6 +366,8 @@ def index(request):
                                               "Copy": "Copy (If Needed)",
                                               "Creative": "Creative (If Needed)",
                                               })
+
+        # add excel table
 
         workbook = xlsxwriter.Workbook(output_file, {'nan_inf_to_errors': True})
         worksheet = workbook.add_worksheet("mediaplan")
@@ -378,14 +388,14 @@ def index(request):
 
         # adding background and font color
 
-        whiteFont = Font(color='FFFFFF')
-        blackFill = PatternFill(bgColor='000000', fill_type='solid')
+        #whiteFont = Font(color='FFFFFF')
+        #blackFill = PatternFill(bgColor='000000', fill_type='solid')
 
 
         wb = load_workbook(output_file)
         ws = wb.active
-        ws['A2'].fill = blackFill
-        ws['A2'].font = whiteFont
+        #ws['A2'].fill = blackFill
+        #ws['A2'].font = whiteFont
 
 
         response = HttpResponse(content_type='application/ms-excel')

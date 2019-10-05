@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a0cb949b-4acf-4d75-afcb-22693e410ad2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/input (copy 1).xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/input example.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/input.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/coders/coders/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/coders/coders/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/coders/mediaplan/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/coders/mediaplan/templates/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/coders/mediaplan/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/coders/mediaplan/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testowe.py" beforeDir="false" afterPath="$PROJECT_DIR$/testowe.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,17 +19,25 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
   <component name="ProjectId" id="1REhXwNrPor7Vcixt2bwg51nC5F" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
@@ -185,6 +194,7 @@
       <workItem from="1569928271942" duration="7728000" />
       <workItem from="1569946832673" duration="1582000" />
       <workItem from="1570014722702" duration="217000" />
+      <workItem from="1570260655149" duration="6840000" />
     </task>
     <task id="LOCAL-00001" summary="some functionalities added:&#10;- buy model buy rate&#10;- kpi &#10;- sov&#10;- serving&#10;- net cost">
       <created>1569592200516</created>
@@ -217,8 +227,8 @@
     <option name="LAST_COMMIT_MESSAGE" value="some functionalities added:&#10;- buy model buy rate&#10;- kpi &#10;- sov&#10;- serving&#10;- net cost" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/mediaplan_generator$column_order.coverage" NAME="column_order Coverage Results" MODIFIED="1569936821842" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/coders/mediaplan" />
     <SUITE FILE_PATH="coverage/mediaplan_generator$testy.coverage" NAME="testy Coverage Results" MODIFIED="1569243415024" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/mediaplan_generator$column_order.coverage" NAME="column_order Coverage Results" MODIFIED="1569936821842" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/coders/mediaplan" />
     <SUITE FILE_PATH="coverage/mediaplan_generator$main.coverage" NAME="main Coverage Results" MODIFIED="1569327592100" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

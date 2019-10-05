@@ -13,6 +13,17 @@ from openpyxl.styles import Color, PatternFill, Font, Border
 from .column_order import column_order
 
 
+'''
+$(document).ready(function() {
+                $("#formButton").one('submit', function() {
+                    //event.preventDefault();
+                    $(this).submit();
+                    $("#myForm").toggle();
+
+
+                });
+            });
+'''
 # Create your views here.
 
 
